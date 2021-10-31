@@ -1,59 +1,108 @@
 <template>
     <div>
-        <h1>{{id? '編輯' : '新增'}}英雄 {{id}}</h1>
+        <h1>{{ id ? '編輯' : '新增' }}英雄 {{ id }}</h1>
         <el-form label-width="120px" @submit.native.prevent="save">
-            <el-form-item label="名稱">
-                <el-input v-model="model.name"></el-input>
-            </el-form-item>
-            <el-form-item label="稱號">
-                <el-input v-model="model.title"></el-input>
-            </el-form-item>
-            <el-form-item label="頭像">
-                <el-upload class="avatar-uploader" :action="$http.defaults.baseURL + '/upload'" :show-file-list="false" :on-success="afterUpload">
-                    <img v-if="model.avatar" :src="model.avatar" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-            </el-form-item>
-            <el-form-item label="類型">
-                <el-select v-model="model.cate" multiple>
-                    <el-option v-for="item of categories" :label="item.name" :value="item._id" :key="item._id">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="難度">
-                <el-rate style="margin-top:0.6rem" v-model="model.scores.difficulty" :max="9" show-score></el-rate>
-            </el-form-item>
-            <el-form-item label="技能">
-                <el-rate style="margin-top:0.6rem" v-model="model.scores.skill" :max="9" show-score></el-rate>
-            </el-form-item>
-            <el-form-item label="攻擊">
-                <el-rate style="margin-top:0.6rem" v-model="model.scores.attack" :max="9" show-score></el-rate>
-            </el-form-item>
-            <el-form-item label="生存">
-                <el-rate style="margin-top:0.6rem" v-model="model.scores.survive" :max="9" show-score></el-rate>
-            </el-form-item>
-            <el-form-item label="順風出裝">
-                <el-select v-model="model.upWind.equipment" multiple>
-                    <el-option v-for="item of items" :label="item.name" :value="item._id" :key="item._id">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="逆風出裝">
-                <el-select v-model="model.downWind.equipment" multiple>
-                    <el-option v-for="item of items" :label="item.name" :value="item._id" :key="item._id">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="使用技巧">
-                <el-input type="textarea" v-model="model.usageTips"></el-input>
-            </el-form-item>
-            <el-form-item label="對抗技巧">
-                <el-input type="textarea" v-model="model.battleTips"></el-input>
-            </el-form-item>
-            <el-form-item label="團戰思路">
-                <el-input type="textarea" v-model="model.teamTips"></el-input>
-            </el-form-item>
-            <el-form-item>
+            <el-tabs type="border-card" valve="skills">
+                <el-tab-pane label="基本訊息" name="basic">
+                    <el-form-item label="名稱">
+                        <el-input v-model="model.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="稱號">
+                        <el-input v-model="model.title"></el-input>
+                    </el-form-item>
+                    <el-form-item label="頭像">
+                        <el-upload
+                            class="avatar-uploader"
+                            :action="$http.defaults.baseURL + '/upload'"
+                            :show-file-list="false"
+                            :on-success="afterUpload"
+                        >
+                            <img v-if="model.avatar" :src="model.avatar" class="avatar" />
+                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        </el-upload>
+                    </el-form-item>
+                    <el-form-item label="類型">
+                        <el-select v-model="model.cate" multiple>
+                            <el-option v-for="item of categories" :label="item.name" :value="item._id" :key="item._id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="難度">
+                        <el-rate
+                            style="margin-top: 0.6rem"
+                            v-model="model.scores.difficulty"
+                            :max="9"
+                            show-score
+                        ></el-rate>
+                    </el-form-item>
+                    <el-form-item label="技能">
+                        <el-rate style="margin-top: 0.6rem" v-model="model.scores.skill" :max="9" show-score></el-rate>
+                    </el-form-item>
+                    <el-form-item label="攻擊">
+                        <el-rate style="margin-top: 0.6rem" v-model="model.scores.attack" :max="9" show-score></el-rate>
+                    </el-form-item>
+                    <el-form-item label="生存">
+                        <el-rate
+                            style="margin-top: 0.6rem"
+                            v-model="model.scores.survive"
+                            :max="9"
+                            show-score
+                        ></el-rate>
+                    </el-form-item>
+                    <el-form-item label="順風出裝">
+                        <el-select v-model="model.upWind.equipment" multiple>
+                            <el-option v-for="item of items" :label="item.name" :value="item._id" :key="item._id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="逆風出裝">
+                        <el-select v-model="model.downWind.equipment" multiple>
+                            <el-option v-for="item of items" :label="item.name" :value="item._id" :key="item._id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="使用技巧">
+                        <el-input type="textarea" v-model="model.usageTips"></el-input>
+                    </el-form-item>
+                    <el-form-item label="對抗技巧">
+                        <el-input type="textarea" v-model="model.battleTips"></el-input>
+                    </el-form-item>
+                    <el-form-item label="團戰思路">
+                        <el-input type="textarea" v-model="model.teamTips"></el-input>
+                    </el-form-item>
+                </el-tab-pane>
+                <el-tab-pane label="技能" name="skills">
+                    <el-button size="small" @click="model.skills.push({})">
+                        <i class="el-icon-plus" type="text">新增技能</i>
+                    </el-button>
+                    <el-row type="flex" style="flex-wrap: wrap">
+                        <el-col :md="12" v-for="(item, i) in model.skills" :key="i">
+                            <el-form-item label="名稱">
+                                <el-input v-model="item.name"></el-input>
+                            </el-form-item>
+                            <el-form-item label="圖標">
+                                <el-upload
+                                    class="avatar-uploader"
+                                    :action="$http.defaults.baseURL + '/upload'"
+                                    :show-file-list="false"
+                                    :on-success="afterUpload"
+                                >
+                                    <img v-if="item.icon" :src="item.icon" class="avatar" />
+                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                </el-upload>
+                            </el-form-item>
+                            <el-form-item label="描述">
+                                <el-input type="textarea" v-model="item.description"></el-input>
+                            </el-form-item>
+                            <el-form-item label="小提示">
+                                <el-input type="textarea" v-model="item.tips"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                </el-tab-pane>
+            </el-tabs>
+
+            <el-form-item style="margin-top: 1rem">
                 <el-button type="primary" native-type="submit">保存</el-button>
             </el-form-item>
         </el-form>

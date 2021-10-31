@@ -3,7 +3,7 @@
         <h1>英雄列表</h1>
         <el-table :data="items">
             <el-table-column prop="_id" label="ID" width="240px"></el-table-column>
-            <el-table-column prop="name" label="英雄名稱"></el-table-column>
+            <el-table-column prop="name" label="名稱"></el-table-column>
             <el-table-column prop="title" label="稱號"></el-table-column>
             <el-table-column prop="avatar" label="圖標">
                 <template slot-scope="scope">
