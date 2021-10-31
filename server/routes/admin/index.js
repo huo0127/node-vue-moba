@@ -23,7 +23,7 @@ module.exports = app => {
     if (req.Model.modelName === 'Category') {
       queryOptions.populate = 'parent'
     }
-    const items = await req.Model.find().setOptions(queryOptions).limit(200)
+    const items = await req.Model.find().setOptions(queryOptions).limit(381)
     res.send(items)
   })
   router.get('/:id', async (req, res) => {
