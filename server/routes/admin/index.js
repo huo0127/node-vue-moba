@@ -1,6 +1,7 @@
 module.exports = app => {
   const express = require('express')
   const jwt = require('jsonwebtoken')
+  const assert = require('http-assert')
   const AdminUser = require('../../models/AdminUser')
   const router = express.Router({
     mergeParams: true,
@@ -33,8 +34,11 @@ module.exports = app => {
       const token = String(req.headers.authorization || '')
         .split(' ')
         .pop()
+      assert(token, 401, '請先登入')
       const { id } = jwt.verify(token, app.get('secret'))
+      assert(id, 401, '請先登入')
       req.user = await AdminUser.findById(id)
+      assert(req.user, 401, '請先登入')
       await next()
     },
     async (req, res) => {
@@ -80,20 +84,21 @@ module.exports = app => {
     const user = await AdminUser.findOne({
       username,
     }).select('+password')
-    if (!user) {
-      return res.status(422).send({
-        message: '用戶不存在',
-      })
-    }
+    assert(user, 422, '用戶不存在')
+
     // 2.校驗密碼
     const isValid = require('bcrypt').compareSync(password, user.password)
-    if (!isValid) {
-      return res.status(422).send({
-        message: '密碼錯誤',
-      })
-    }
+    assert(isValid, 422, '密碼錯誤')
+
     // 3.返回token
     const token = jwt.sign({ id: user._id }, app.get('secret'))
     return res.send({ token })
+  })
+
+  // 錯誤處理函數
+  app.use(async (err, req, res, next) => {
+    res.status(err.statusCode || 500).send({
+      message: err.message,
+    })
   })
 }
