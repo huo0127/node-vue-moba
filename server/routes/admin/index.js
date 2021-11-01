@@ -28,29 +28,15 @@ module.exports = app => {
   })
 
   // 資源列表
-  router.get(
-    '/',
-    async (req, res, next) => {
-      const token = String(req.headers.authorization || '')
-        .split(' ')
-        .pop()
-      assert(token, 401, '請先登入')
-      const { id } = jwt.verify(token, app.get('secret'))
-      assert(id, 401, '請先登入')
-      req.user = await AdminUser.findById(id)
-      assert(req.user, 401, '請先登入')
-      await next()
-    },
-    async (req, res) => {
-      console.log(req.user)
-      const queryOptions = {}
-      if (req.Model.modelName === 'Category') {
-        queryOptions.populate = 'parent'
-      }
-      const items = await req.Model.find().setOptions(queryOptions).limit(381)
-      res.send(items)
+  router.get('/', async (req, res) => {
+    console.log(req.user)
+    const queryOptions = {}
+    if (req.Model.modelName === 'Category') {
+      queryOptions.populate = 'parent'
     }
-  )
+    const items = await req.Model.find().setOptions(queryOptions).limit(381)
+    res.send(items)
+  })
 
   // 資源詳情
   router.get('/:id', async (req, res) => {
@@ -58,20 +44,17 @@ module.exports = app => {
     res.send(model)
   })
 
-  app.use(
-    '/admin/api/rest/:resource',
-    async (req, res, next) => {
-      const modelName = require('inflection').classify(req.params.resource)
-      req.Model = require(`../../models/${modelName}`)
-      next()
-    },
-    router
-  )
+  // 登入較驗中間件
+  const authMiddleware = require('../../middleware/auth')
+
+  const resourceMiddleware = require('../../middleware/resource')
+
+  app.use('/admin/api/rest/:resource', authMiddleware(), resourceMiddleware(), router)
 
   // 上傳
   const multer = require('multer')
   const upload = multer({ dest: __dirname + '/../../uploads' })
-  app.post('/admin/api/upload', upload.single('file'), async (req, res) => {
+  app.post('/admin/api/upload', authMiddleware(), upload.single('file'), async (req, res) => {
     const file = req.file
     file.url = `http://localhost:3000/uploads/${file.filename}`
     res.send(file)
