@@ -1,3 +1,5 @@
+const AdminUser = require('../../models/AdminUser')
+
 module.exports = app => {
   const express = require('express')
   const router = express.Router({
@@ -41,11 +43,29 @@ module.exports = app => {
     router
   )
 
+  // 上傳
   const multer = require('multer')
   const upload = multer({ dest: __dirname + '/../../uploads' })
   app.post('/admin/api/upload', upload.single('file'), async (req, res) => {
     const file = req.file
     file.url = `http://localhost:3000/uploads/${file.filename}`
     res.send(file)
+  })
+
+  // 登入
+  app.post('/admin/api/login', async (req, res) => {
+    const { username, password } = req.body
+    // 1.根據用戶名找用戶
+    const AdminUser = require('../../models/AdminUser')
+    const user = await AdminUser.findOne({
+      username,
+    })
+    if (!user) {
+      return res.status(422).send({
+        message: '用戶不存在',
+      })
+    }
+    // 2.校驗密碼
+    // 3.返回token
   })
 }
