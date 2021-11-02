@@ -12,6 +12,7 @@ Vue.use(VueAwesomeSwiper);
 
 Vue.config.productionTip = false;
 
+import "./assets/iconfont/iconfont.css";
 import "./assets/scss/style.scss";
 
 /* eslint-disable no-new */
