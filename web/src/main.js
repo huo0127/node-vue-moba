@@ -15,6 +15,9 @@ Vue.config.productionTip = false;
 import "./assets/iconfont/iconfont.css";
 import "./assets/scss/style.scss";
 
+import Card from "./components/Card.vue";
+Vue.component("m-card", Card);
+
 /* eslint-disable no-new */
 new Vue({
   el: "#app",

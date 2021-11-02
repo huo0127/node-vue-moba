@@ -20,14 +20,45 @@
                     <div class="py-2">爆料站</div>
                 </div>
             </div>
-            <div class="bg-light py-2 fs-sm d-flex ai-center jc-center">
-                <i class="sprite sprite-arrow mr-1"></i>
-                <span>收起</span>
-            </div>
+            <div class="bg-light py-2 fs-sm d-flex ai-center jc-center"></div>
+            <i class="sprite sprite-arrow mr-1"></i>
+            <span>收起</span>
         </div>
+
         <!-- end of nav icons -->
 
-        <i class="iconfont icon-news"></i>
+        <m-card icon="news" title="新聞資訊">
+            <div class="nav jc-between">
+                <div class="nav-item active">
+                    <div class="nav-link">熱門</div>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-link">新聞</div>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-link">公告</div>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-link">活動</div>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-link">賽事</div>
+                </div>
+            </div>
+            <div class="pt-3">
+                <swiper>
+                    <swiper-slide v-for="m in 5" :key="m">
+                        <div class="py-2" v-for="n in 5" :key="n">
+                            <span>[新聞]</span>
+                            <span>|</span>
+                            <span>夏日新版本"天下星之隊"即將6月上線</span>
+                            <span>06/02</span>
+                        </div>
+                    </swiper-slide>
+                </swiper>
+            </div>
+        </m-card>
+        <m-card icon="card-hero" title="英雄列表"></m-card>
     </div>
 </template>
 
