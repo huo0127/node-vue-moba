@@ -12,6 +12,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.2em;
   background: #f1f1f1;
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -50,6 +51,14 @@ a {
   background-color: #999;
 }
 
+.text-grey-1 {
+  color: #666;
+}
+
+.bg-grey-1 {
+  background-color: #666;
+}
+
 .text-dark-1 {
   color: #343440;
 }
@@ -84,6 +93,10 @@ a {
 
 .text-right {
   text-align: right;
+}
+
+.fs-xxs {
+  font-size: 0.6154rem;
 }
 
 .fs-xs {
@@ -516,4 +529,20 @@ a {
 
 .pl-5 {
   padding-left: 3rem;
+}
+
+.btn {
+  border: none;
+  border-radius: 0.1538rem;
+  font-size: 0.9231rem;
+  padding: 0.2rem 0.6rem;
+}
+
+.nav .nav-item {
+  border-bottom: 3px solid transparent;
+  padding-bottom: 0.2rem;
+}
+
+.nav .nav-item.active {
+  border-bottom: 3px solid #fff;
 }
