@@ -4,9 +4,15 @@ import Vue from "vue";
 import App from "./App";
 import router from "./router";
 
+import VueAwesomeSwiper from "vue-awesome-swiper";
+
+// import style (<= Swiper 5.x)
+import "swiper/css/swiper.css";
+Vue.use(VueAwesomeSwiper);
+
 Vue.config.productionTip = false;
 
-import "./style.css";
+import "./assets/scss/style.scss";
 
 /* eslint-disable no-new */
 new Vue({
