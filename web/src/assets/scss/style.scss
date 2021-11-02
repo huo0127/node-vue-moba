@@ -1,4 +1,5 @@
 @import "./variables";
+
 // reset
 * {
   box-sizing: border-box;
@@ -32,6 +33,7 @@ a {
     text-align: $var !important;
   }
 }
+
 @each $sizeKey, $size in $font-sizes {
   .fs-#{$sizeKey} {
     font-size: $size * $base-font-size;
@@ -74,14 +76,12 @@ a {
 @each $typeKey, $type in $spacing-types {
   // .m-1
   @each $sizeKey, $size in $spacing-sizes {
-    // .mt-1 { margin-top: 0.25rem; }
     .#{$typeKey}-#{$sizeKey} {
       #{$type}: $size * $spacing-base-size;
     }
   }
   // .mx-1 , .my-1
   @each $sizeKey, $size in $spacing-sizes {
-    // .mt-1 { margin-top: 0.25rem; }
     .#{$typeKey}x-#{$sizeKey} {
       #{$type}-left: $size * $spacing-base-size;
       #{$type}-right: $size * $spacing-base-size;
@@ -94,7 +94,6 @@ a {
   // .mt-1
   @each $directionKey, $direction in $spacing-directions {
     @each $sizeKey, $size in $spacing-sizes {
-      // .mt-1 { margin-top: 0.25rem; }
       .#{$typeKey}#{$directionKey}-#{$sizeKey} {
         #{$type}-#{$direction}: $size * $spacing-base-size;
       }
