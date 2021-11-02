@@ -1,5 +1,6 @@
 * {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   outline: none;
 }
 
@@ -85,23 +86,4 @@ a {
 .text-right {
   text-align: right;
 }
-
-.fs-xs {
-  font-size: 0.7692rem;
-}
-
-.fs-sm {
-  font-size: 0.9231rem;
-}
-
-.fs-md {
-  font-size: 1rem;
-}
-
-.fs-lg {
-  font-size: 1.0769rem;
-}
-
-.fs-xl {
-  font-size: 1.2308rem;
-}
+/*# sourceMappingURL=style.css.map */
