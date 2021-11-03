@@ -53,7 +53,6 @@
 
 <script>
 import dayjs from 'dayjs'
-
 export default {
     filters: {
         date(val) {
