@@ -6,7 +6,7 @@ module.exports = app => {
   const Article = mongoose.model('Article')
   router.get('/news/init', async (req, res) => {
     const parent = await Category.findOne({
-      name: '新闻资讯',
+      name: '新闻资讯 ',
     })
     const cats = await Category.find()
       .where({
@@ -57,7 +57,7 @@ module.exports = app => {
     //   }
     // }).lean()
     const parent = await Category.findOne({
-      name: '新闻分类',
+      name: '新闻资讯',
     })
     const cats = await Category.aggregate([
       { $match: { parent: parent._id } },
