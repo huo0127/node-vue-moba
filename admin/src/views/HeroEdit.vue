@@ -22,7 +22,7 @@
                         </el-upload>
                     </el-form-item>
                     <el-form-item label="類型">
-                        <el-select v-model="model.cate" multiple>
+                        <el-select v-model="model.categories" multiple>
                             <el-option v-for="item of categories" :label="item.name" :value="item._id" :key="item._id">
                             </el-option>
                         </el-select>
@@ -50,13 +50,13 @@
                         ></el-rate>
                     </el-form-item>
                     <el-form-item label="順風出裝">
-                        <el-select v-model="model.upWind.equipment" multiple>
+                        <el-select v-model="model.item1" multiple>
                             <el-option v-for="item of items" :label="item.name" :value="item._id" :key="item._id">
                             </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="逆風出裝">
-                        <el-select v-model="model.downWind.equipment" multiple>
+                        <el-select v-model="model.item2" multiple>
                             <el-option v-for="item of items" :label="item.name" :value="item._id" :key="item._id">
                             </el-option>
                         </el-select>
