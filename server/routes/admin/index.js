@@ -1,10 +1,87 @@
 module.exports = app => {
   const express = require('express')
-  const router = express.Router()
-  const Category = require('../../models/Category')
-  router.post('/categories', async (req, res) => {
-    const model = await Category.create(req.body)
+  const jwt = require('jsonwebtoken')
+  const assert = require('http-assert')
+  const AdminUser = require('../../models/AdminUser')
+  const router = express.Router({
+    mergeParams: true,
+  })
+
+  // 創建資源
+  router.post('/', async (req, res) => {
+    const model = await req.Model.create(req.body)
     res.send(model)
   })
-  app.use('/admin/api', router)
+
+  // 更新資源
+  router.put('/:id', async (req, res) => {
+    const model = await req.Model.findByIdAndUpdate(req.params.id, req.body)
+    res.send(model)
+  })
+
+  // 刪除資源
+  router.delete('/:id', async (req, res) => {
+    await req.Model.findByIdAndDelete(req.params.id, req.body)
+    res.send({
+      success: true,
+    })
+  })
+
+  // 資源列表
+  router.get('/', async (req, res) => {
+    console.log(req.user)
+    const queryOptions = {}
+    if (req.Model.modelName === 'Category') {
+      queryOptions.populate = 'parent'
+    }
+    const items = await req.Model.find().setOptions(queryOptions).limit(381)
+    res.send(items)
+  })
+
+  // 資源詳情
+  router.get('/:id', async (req, res) => {
+    const model = await req.Model.findById(req.params.id)
+    res.send(model)
+  })
+
+  // 登入較驗中間件
+  const authMiddleware = require('../../middleware/auth')
+
+  const resourceMiddleware = require('../../middleware/resource')
+
+  app.use('/admin/api/rest/:resource', authMiddleware(), resourceMiddleware(), router)
+
+  // 上傳
+  const multer = require('multer')
+  const upload = multer({ dest: __dirname + '/../../uploads' })
+  app.post('/admin/api/upload', authMiddleware(), upload.single('file'), async (req, res) => {
+    const file = req.file
+    file.url = `http://localhost:3000/uploads/${file.filename}`
+    res.send(file)
+  })
+
+  // 登入
+  app.post('/admin/api/login', async (req, res) => {
+    const { username, password } = req.body
+    // 1.根據用戶名找用戶
+    const user = await AdminUser.findOne({
+      username,
+    }).select('+password')
+    assert(user, 422, '用戶不存在')
+
+    // 2.校驗密碼
+    const isValid = require('bcrypt').compareSync(password, user.password)
+    assert(isValid, 422, '密碼錯誤')
+
+    // 3.返回token
+    const token = jwt.sign({ id: user._id }, app.get('secret'))
+    return res.send({ token })
+  })
+
+  // 錯誤處理函數
+  app.use(async (err, req, res, next) => {
+    res.status(err.statusCode || 500).send({
+      message: err.message,
+    })
+  })
 }
